@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.spring.registerAndLogin.exception.NoLoggedInUserException;
+import com.spring.registerAndLogin.exception.ProductNotFoundException;
 
 @RestControllerAdvice
 public class UserExceptionHandler {
@@ -25,5 +26,9 @@ public class UserExceptionHandler {
 	@ExceptionHandler(NoLoggedInUserException.class)
 	public ResponseEntity<String> noLoggedInUserException(NoLoggedInUserException ex){
 		return new ResponseEntity<String>(ex.getMessage(),HttpStatus.UNAUTHORIZED);
+	}
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ResponseEntity<String> productNotFoundException(ProductNotFoundException ex){
+		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS);
 	}
 }

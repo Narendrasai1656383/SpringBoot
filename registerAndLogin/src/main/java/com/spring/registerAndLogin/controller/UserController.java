@@ -13,7 +13,7 @@ import com.spring.registerAndLogin.aspect.RequiredLogin;
 import com.spring.registerAndLogin.dto.LoginRequest;
 import com.spring.registerAndLogin.dto.UserRequest;
 import com.spring.registerAndLogin.entity.User;
-import com.spring.registerAndLogin.service.UserService;
+import com.spring.registerAndLogin.service.UserServiceInterface;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -24,7 +24,7 @@ public class UserController {
 	@Autowired
 	private HttpSession httpSession;
 	@Autowired
-	private UserService userService;
+	private UserServiceInterface userService;
 	@PostMapping("/register")
 	public String registerUser(@Valid @RequestBody UserRequest userRequest) {
 		return userService.registerUser(userRequest);
@@ -40,8 +40,8 @@ public class UserController {
 	}
 	@GetMapping("/details")
 	@RequiredLogin
-	public String getUserDetails() {
-			return "User Details :"+httpSession.getAttribute("userLoggedIn").toString(); 
+	public User getUserDetails() {
+			return (User)httpSession.getAttribute("userLoggedIn"); 
 	}
 	@GetMapping("/logout")
 	@RequiredLogin
