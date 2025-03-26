@@ -18,6 +18,7 @@ import com.spring.registerAndLogin.repository.ProductRepository;
 import com.spring.registerAndLogin.service.OrderServiceInterface;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Service
 public class OrderService implements OrderServiceInterface{
@@ -28,19 +29,21 @@ public class OrderService implements OrderServiceInterface{
 	@Autowired
 	private HttpSession httpSession;
 	@Override
+	@Transactional
 	public Order placeOrder(OrderRequest orderRequest) throws ProductNotFoundException {
+		System.out.println(orderRequest.toString());
 		Order order=new Order();
 		order.setUser((User)httpSession.getAttribute("userLoggedIn"));
 		Set<OrderItem> orderItems=new HashSet<>();
 		for(OrderItemRequest itemRequest:orderRequest.getOrderItems()) {
 			Product product=productRepository.findById(itemRequest.getProductId())
 					.orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
-			orderItems.add(new OrderItem(null,
-					order,
-					product,
-					itemRequest.getQuantity(),
-					product.getPrice()
-					));
+			OrderItem orderItem=new OrderItem();
+			orderItem.setOrder(order);
+			orderItem.setPrice(product.getPrice());
+			orderItem.setProduct(product);
+			orderItem.setQuantity(itemRequest.getQuantity());
+			orderItems.add(orderItem);
 		}
 		order.setOrderItems(orderItems);
 		return orderRepository.save(order);

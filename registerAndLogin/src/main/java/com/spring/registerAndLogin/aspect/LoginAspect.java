@@ -6,8 +6,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.spring.registerAndLogin.entity.User;
 import com.spring.registerAndLogin.exception.NoLoggedInUserException;
+import com.spring.registerAndLogin.entity.User;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -22,6 +22,9 @@ public class LoginAspect {
 	}
 	@Before("requiredLoginPointCut()")
 	public void checkLogin() throws NoLoggedInUserException {
+		if(httpSession.getAttribute("userLoggedIn")==null) {
+			throw new NoLoggedInUserException("No user is logged in!");
+		}
 		String loggedInUser=((User)httpSession.getAttribute("userLoggedIn")).getUserName();
 		if(loggedInUser==null) {
 			throw new NoLoggedInUserException("No user is logged in!");
