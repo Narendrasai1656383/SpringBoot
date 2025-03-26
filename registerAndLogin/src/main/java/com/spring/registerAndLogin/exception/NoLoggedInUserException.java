@@ -1,4 +1,4 @@
-package com.spring.registerAndLogin.aspect.exception;
+package com.spring.registerAndLogin.exception;
 
 public class NoLoggedInUserException extends Exception{
 	private static final long serialVersionUID = 1L;

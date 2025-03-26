@@ -6,8 +6,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.spring.registerAndLogin.aspect.exception.NoLoggedInUserException;
 import com.spring.registerAndLogin.entity.User;
+import com.spring.registerAndLogin.exception.NoLoggedInUserException;
 
 import jakarta.servlet.http.HttpSession;
 

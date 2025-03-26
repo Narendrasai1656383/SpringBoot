@@ -10,7 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.spring.registerAndLogin.aspect.exception.NoLoggedInUserException;
+import com.spring.registerAndLogin.exception.NoLoggedInUserException;
 
 @RestControllerAdvice
 public class UserExceptionHandler {
