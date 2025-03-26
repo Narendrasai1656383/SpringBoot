@@ -1,5 +1,7 @@
 package com.spring.registerAndLogin.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.registerAndLogin.aspect.RequiredLogin;
 import com.spring.registerAndLogin.dto.LoginRequest;
 import com.spring.registerAndLogin.dto.UserRequest;
+import com.spring.registerAndLogin.entity.User;
 import com.spring.registerAndLogin.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,17 +31,17 @@ public class UserController {
 	}
 	@PostMapping("/login")
 	public String loginUser(@Valid @RequestBody LoginRequest loginRequest) {
-		 String userName=userService.loginUser(loginRequest.getUserName(),loginRequest.getPassword());
-		if(userName!=null) {
-			httpSession.setAttribute("userLoggedIn", userName);
-			return "Login successful! Welcome "+userName;
+		 Optional<User> user=userService.loginUser(loginRequest.getUserName(),loginRequest.getPassword());
+		if(user.isPresent()) {
+			httpSession.setAttribute("userLoggedIn", user.get());
+			return "Login successful! Welcome "+user.get().getUserName();
 		}
 		return "Invalid User Name or Password";
 	}
 	@GetMapping("/details")
 	@RequiredLogin
 	public String getUserDetails() {
-			return "User Details :"+userService.getUserDetails((String)httpSession.getAttribute("userLoggedIn")); 
+			return "User Details :"+httpSession.getAttribute("userLoggedIn").toString(); 
 	}
 	@GetMapping("/logout")
 	@RequiredLogin

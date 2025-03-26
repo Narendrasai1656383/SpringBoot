@@ -24,6 +24,6 @@ public class UserExceptionHandler {
     }
 	@ExceptionHandler(NoLoggedInUserException.class)
 	public ResponseEntity<String> noLoggedInUserException(NoLoggedInUserException ex){
-		return new ResponseEntity(ex.getMessage(),HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<String>(ex.getMessage(),HttpStatus.UNAUTHORIZED);
 	}
 }

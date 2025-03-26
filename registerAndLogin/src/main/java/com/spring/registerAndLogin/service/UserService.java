@@ -17,6 +17,9 @@ public class UserService {
 		if(userRepo.findByUserName(userRequest.getUserName()).isPresent()) {
 			return "User Already Exists";
 		}
+		if(userRepo.findByEmail(userRequest.getEmail()).isPresent()) {
+			return "Use alternative Email/Email is already used";
+		}
 		User user=new User(
 				0,
 				userRequest.getUserName(),
@@ -26,15 +29,11 @@ public class UserService {
 		userRepo.save(user);
 		return "User Registered Successfully";
 	}
-	public String loginUser(String userName, String password) {
+	public Optional<User> loginUser(String userName, String password) {
 		Optional<User> user=userRepo.findByUserName(userName);
 		if(user.isPresent() && password.equals(user.get().getPassword())) {
-			return user.get().getUserName();
+			return user;
 		}
-		return null;
-	}
-	public String getUserDetails(String loggedInUser) {
-		Optional<User> user=userRepo.findByUserName(loggedInUser);
-		return user.toString();
+		return Optional.empty();
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.spring.registerAndLogin.aspect.exception.NoLoggedInUserException;
+import com.spring.registerAndLogin.entity.User;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,7 +22,7 @@ public class LoginAspect {
 	}
 	@Before("requiredLoginPointCut()")
 	public void checkLogin() throws NoLoggedInUserException {
-		String loggedInUser=(String)httpSession.getAttribute("userLoggedIn");
+		String loggedInUser=((User)httpSession.getAttribute("userLoggedIn")).getUserName();
 		if(loggedInUser==null) {
 			throw new NoLoggedInUserException("No user is logged in!");
 		}
