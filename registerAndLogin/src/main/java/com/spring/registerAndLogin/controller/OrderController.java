@@ -1,6 +1,9 @@
 package com.spring.registerAndLogin.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +20,14 @@ import com.spring.registerAndLogin.service.OrderServiceInterface;
 public class OrderController {
 	@Autowired
 	private OrderServiceInterface orderService;
-	@PostMapping
+	@PostMapping("/placeOrder")
 	@RequiredLogin
 	public Order placeOrder(@RequestBody OrderRequest orderRequest) throws ProductNotFoundException {
 		return orderService.placeOrder(orderRequest);
+	}
+	@GetMapping("/getAllOrders")
+	@RequiredLogin
+	public List<Order> getAllOrders(){
+		return orderService.getAllProducts();
 	}
 }

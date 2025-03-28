@@ -1,6 +1,7 @@
 package com.spring.registerAndLogin.service.impl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import com.spring.registerAndLogin.repository.UserRepository;
 import com.spring.registerAndLogin.service.OrderServiceInterface;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
 @Service
 public class OrderService implements OrderServiceInterface{
@@ -32,7 +32,6 @@ public class OrderService implements OrderServiceInterface{
 	@Autowired
 	private UserRepository userRepository;
 	@Override
-	@Transactional
 	public Order placeOrder(OrderRequest orderRequest) throws ProductNotFoundException {
 		Order order=new Order();
 		order.setUser(userRepository.findById((
@@ -52,4 +51,9 @@ public class OrderService implements OrderServiceInterface{
 		order.setOrderItems(orderItems);
 		return orderRepository.save(order);
 	}
+	@Override
+	public List<Order> getAllProducts() {
+		return orderRepository.findByUserId(((User)httpSession.getAttribute("userLoggedIn")).getId());
+	}
+	
 }
