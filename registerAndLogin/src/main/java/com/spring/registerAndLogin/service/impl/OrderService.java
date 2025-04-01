@@ -51,7 +51,7 @@ public class OrderService implements OrderServiceInterface{
 			orderPrice+=orderItem.getPrice();
 		}
 		order.setOrderItems(orderItems);
-		order.setOrderPrice(orderPrice);
+		order.setOrderPrice(orderPrice) ;
 		return orderRepository.save(order);
 	}
 	@Override
