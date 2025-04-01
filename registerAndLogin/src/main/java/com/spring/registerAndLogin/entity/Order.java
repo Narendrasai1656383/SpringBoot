@@ -34,7 +34,6 @@ public class Order {
 	private LocalDateTime orderDate=LocalDateTime.now();
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false)
-	@JsonBackReference
 	private User user;
 	@OneToMany(mappedBy ="order", cascade = CascadeType.ALL)
 	@EqualsAndHashCode.Exclude
