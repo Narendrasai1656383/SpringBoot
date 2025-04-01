@@ -38,17 +38,20 @@ public class OrderService implements OrderServiceInterface{
 				(User)httpSession.getAttribute("userLoggedIn")
 				).getId()).get());
 		Set<OrderItem> orderItems=new HashSet<>();
+		Double orderPrice=0.0;
 		for(OrderItemRequest itemRequest:orderRequest.getOrderItems()) {
 			Product product=productRepository.findById(itemRequest.getProductId())
 					.orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
 			OrderItem orderItem=new OrderItem();
 			orderItem.setOrder(order);
-			orderItem.setPrice(product.getPrice());
+			orderItem.setPrice(product.getPrice()*itemRequest.getQuantity());
 			orderItem.setProduct(product);
 			orderItem.setQuantity(itemRequest.getQuantity());
 			orderItems.add(orderItem);
+			orderPrice+=orderItem.getPrice();
 		}
 		order.setOrderItems(orderItems);
+		order.setOrderPrice(orderPrice);
 		return orderRepository.save(order);
 	}
 	@Override

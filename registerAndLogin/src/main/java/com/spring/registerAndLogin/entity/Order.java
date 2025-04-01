@@ -43,4 +43,5 @@ public class Order {
 	public Set<OrderItem> getOrderItems() {
 	    return Collections.unmodifiableSet(orderItems);
 	}
+	private Double orderPrice;
 }
