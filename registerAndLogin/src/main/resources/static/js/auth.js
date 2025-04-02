@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080/auth";
+const API_BASE_URL = "http://192.168.33.89:8080/auth";
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");

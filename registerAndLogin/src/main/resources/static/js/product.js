@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchProducts() {
-    fetch("http://localhost:8080/product/get")
+    fetch("http://192.168.33.89:8080/product/get")
         .then(response => response.json())
         .then(products => {
             displayProducts(products);
