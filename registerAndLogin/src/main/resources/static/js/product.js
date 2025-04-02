@@ -5,13 +5,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const goToOrdersBtn = document.getElementById("goToOrders");
     if (goToOrdersBtn) {
         goToOrdersBtn.addEventListener("click", function () {
+			displayCartItems();
             window.location.href = "order.html"; 
         });
     }
 });
 
 function fetchProducts() {
-    fetch("http://192.168.33.89:8080/product/get")
+    fetch("http://localhost:8080/product/get")
         .then(response => response.json())
         .then(products => {
             displayProducts(products);
