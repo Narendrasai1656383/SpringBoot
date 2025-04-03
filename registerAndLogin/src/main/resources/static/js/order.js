@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function fetchOrders() {
     try {
         console.log("Fetching orders...");
-        const response = await fetch("http://192.168.33.89:8080/order/getAllOrders", {
+        const response = await fetch("http://localhost:8080/order/getAllOrders", {
             method: "GET",
             credentials: "include"
         });
@@ -114,7 +114,7 @@ async function placeOrder() {
 
     try {
         console.log("Placing order with items:", orderItems);
-        const response = await fetch("http://192.168.33.89:8080/order/placeOrder", {
+        const response = await fetch("http://localhost:8080/order/placeOrder", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

@@ -17,7 +17,7 @@ import com.spring.registerAndLogin.exception.ProductNotFoundException;
 import com.spring.registerAndLogin.service.OrderServiceInterface;
 
 @RestController
-@CrossOrigin(origins = "http://192.168.33.89:8080", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 @RequestMapping("/order")
 public class OrderController {
 	@Autowired

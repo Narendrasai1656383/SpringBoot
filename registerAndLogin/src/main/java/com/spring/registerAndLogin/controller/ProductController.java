@@ -15,7 +15,7 @@ import com.spring.registerAndLogin.entity.Product;
 import com.spring.registerAndLogin.service.ProductServiceInterface;
 
 @RestController
-@CrossOrigin(origins = "http://192.168.33.89:8080", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 @RequestMapping("/product")
 public class ProductController {
 	@Autowired
