@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function fetchOrders() {
     try {
         console.log("Fetching orders...");
-        const response = await fetch("http://localhost:8080/order/getAllOrders", {
+        const response = await fetch("http://192.168.33.89:8080/order/getAllOrders", {
             method: "GET",
             credentials: "include"
         });
@@ -33,7 +33,7 @@ async function fetchOrders() {
         if (response.status === 401) {
             console.error("Unauthorized! Please check authentication.");
             alert("You need to log in to view orders.");
-            return;
+            window.location.href="login.html";
         }
 
         if (!response.ok) {
@@ -105,7 +105,6 @@ async function placeOrder() {
     if (cart.length === 0) {
         alert("Please add products to the cart before placing an order.");
         window.location.href="products.html";
-        return;
     }
 
     const orderItems = cart.map(item => ({
@@ -115,7 +114,7 @@ async function placeOrder() {
 
     try {
         console.log("Placing order with items:", orderItems);
-        const response = await fetch("http://localhost:8080/order/placeOrder", {
+        const response = await fetch("http://192.168.33.89:8080/order/placeOrder", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -127,7 +126,7 @@ async function placeOrder() {
         if (response.status === 401) {
             console.error("Unauthorized! Please check authentication.");
             alert("You need to log in to place an order.");
-            return;
+            window.location.href="login.html";
         }
 
         if (!response.ok) {
@@ -135,9 +134,9 @@ async function placeOrder() {
         }
 
         alert("Order placed successfully!");
-        localStorage.removeItem("cart");  // Clear cart after successful order
-        displayCartItems();  // Refresh cart display
-        fetchOrders();  // Refresh order list
+        localStorage.removeItem("cart");  
+        displayCartItems();  
+        fetchOrders();  
     } catch (error) {
         console.error("Error placing order:", error);
     }

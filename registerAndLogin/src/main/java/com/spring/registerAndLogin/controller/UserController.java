@@ -3,6 +3,9 @@ package com.spring.registerAndLogin.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,23 +23,24 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://192.168.33.89:8080", allowCredentials = "true")
 public class UserController {
 	@Autowired
 	private HttpSession httpSession;
 	@Autowired
 	private UserServiceInterface userService;
 	@PostMapping("/register")
-	public String registerUser(@Valid @RequestBody UserRequest userRequest) {
-		return userService.registerUser(userRequest);
+	public ResponseEntity<String> registerUser(@Valid @RequestBody UserRequest userRequest) {
+		return new ResponseEntity<String>(userService.registerUser(userRequest), HttpStatus.OK);
 	}
 	@PostMapping("/login")
-	public String loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<String> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
 		 Optional<User> user=userService.loginUser(loginRequest.getUserName(),loginRequest.getPassword());
 		if(user.isPresent()) {
 			httpSession.setAttribute("userLoggedIn", user.get());
-			return "Login successful! Welcome "+user.get().getUserName();
+			return new ResponseEntity<String>("Login successful! Welcome "+user.get().getUserName(),HttpStatus.OK);
 		}
-		return "Invalid User Name or Password";
+		return new ResponseEntity<String>("Invalid User Name or Password",HttpStatus.NOT_FOUND);
 	}
 	@GetMapping("/details")
 	@RequiredLogin
@@ -45,8 +49,8 @@ public class UserController {
 	}
 	@GetMapping("/logout")
 	@RequiredLogin
-	public String logoutUser(HttpSession httpSession) {
+	public ResponseEntity<String> logoutUser(HttpSession httpSession) {
 		httpSession.invalidate();
-		return "Logged Out Successfully";
+		return new ResponseEntity<String>("Logged Out Successfully",HttpStatus.OK);
 	}
 }

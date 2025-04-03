@@ -3,51 +3,69 @@ window.addEventListener("popstate", function () {
     window.history.replaceState(null, "", window.location.href);
 });
 
-const API_BASE_URL = "http://localhost:8080/auth";
+const API_BASE_URL = "http://192.168.33.89:8080/auth";
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
 
     if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
+        loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const userName = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            
-            const response = await fetch(`${API_BASE_URL}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userName, password })
-            });
 
-            if (response.ok) {
-                alert("Login successful!");
+            fetch(`${API_BASE_URL}/login`, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ userName, password }),
+                credentials: "include" // Ensures session cookies are sent
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => Promise.reject(text));
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert(data); // Should say "Login successful! Welcome {username}"
                 window.location.href = "products.html";
-            } else {
-                alert("Invalid credentials");
-            }
+            })
+            .catch(error => {
+                console.error("Login error:", error);
+                alert(error); // Displays the error message from backend
+            });
         });
     }
 
     if (registerForm) {
-        registerForm.addEventListener("submit", async (e) => {
+        registerForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const userName = document.getElementById("newUsername").value;
             const email = document.getElementById("email").value;
             const password = document.getElementById("newPassword").value;
 
-            const response = await fetch(`${API_BASE_URL}/register`, {
+            fetch(`${API_BASE_URL}/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userName, email, password })
-            });
-
-            const result = await response.text();
-            alert(result);
-            if (response.ok) {
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => Promise.reject(text));
+                }
+                return response.text();
+            })
+            .then(result => {
+                alert(result); // Displays success message
                 window.location.href = "login.html";
-            }
+            })
+            .catch(error => {
+                console.error("Registration error:", error);
+                alert(error);
+            });
         });
     }
 });
