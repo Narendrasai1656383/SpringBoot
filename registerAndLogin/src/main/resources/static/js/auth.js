@@ -30,12 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.text();
             })
             .then(data => {
-                alert(data); // Should say "Login successful! Welcome {username}"
+                alert(data); 
                 window.location.href = "products.html";
             })
             .catch(error => {
                 console.error("Login error:", error);
-                alert(error); // Displays the error message from backend
+                alert(error); 
             });
         });
     }
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.text();
             })
             .then(result => {
-                alert(result); // Displays success message
+                alert(result); 
                 window.location.href = "login.html";
             })
             .catch(error => {

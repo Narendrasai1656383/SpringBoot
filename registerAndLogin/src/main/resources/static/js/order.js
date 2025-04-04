@@ -104,7 +104,8 @@ async function placeOrder() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (cart.length === 0) {
         alert("Please add products to the cart before placing an order.");
-        window.location.href="products.html";
+        window.location.href = "products.html";
+        return;
     }
 
     const orderItems = cart.map(item => ({
@@ -113,7 +114,6 @@ async function placeOrder() {
     }));
 
     try {
-        console.log("Placing order with items:", orderItems);
         const response = await fetch("http://localhost:8080/order/placeOrder", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -121,22 +121,36 @@ async function placeOrder() {
             body: JSON.stringify({ orderItems })
         });
 
-        console.log("Response Status:", response.status);
-        
         if (response.status === 401) {
-            console.error("Unauthorized! Please check authentication.");
             alert("You need to log in to place an order.");
-            window.location.href="login.html";
+            window.location.href = "login.html";
+            return;
         }
 
         if (!response.ok) {
             throw new Error("Order placement failed. Status: " + response.status);
         }
 
+        const order = await response.json();
         alert("Order placed successfully!");
-        localStorage.removeItem("cart");  
-        displayCartItems();  
-        fetchOrders();  
+        localStorage.removeItem("cart");
+        displayCartItems();
+
+        const placedOrderDiv = document.getElementById("placedOrder");
+        if (!placedOrderDiv) return;
+
+        const orderPrice = order.orderPrice !== null ? `$${order.orderPrice.toFixed(2)}` : "Not available";
+        placedOrderDiv.innerHTML = `
+            <h3>Order #${order.id}</h3>
+            <p>Date: ${new Date(order.orderDate).toLocaleString()}</p>
+            <p><strong>Total Price:</strong> ${orderPrice}</p>
+            <h4>Items:</h4>
+            <ul>
+                ${order.orderItems.map(item => `
+                    <li>${item.product?.name || "Unknown"} - ${item.quantity} - ${item.price}</li>
+                `).join("")}
+            </ul>
+        `;
     } catch (error) {
         console.error("Error placing order:", error);
     }
