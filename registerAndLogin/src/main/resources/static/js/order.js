@@ -72,7 +72,7 @@ function displayOrders(orders) {
             <p><strong>Total Price:</strong> ${orderPrice}</p>
             <h4>Items:</h4>
             <ul>
-                ${order.orderItems.map(item => `<li>${item.product?.name || "Unknown"} - ${item.quantity}</li>`).join("")}
+                ${order.orderItems.map(item => `<li>${item.product?.name || "Unknown"} - ${item.quantity} - ${item.price}</li>`).join("")}
             </ul>
         `;
         ordersContainer.appendChild(orderElement);
