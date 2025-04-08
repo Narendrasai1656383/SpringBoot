@@ -1,7 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Page Loaded!"); // Debug: Check if script runs
     displayCartItems();
+	const isActive = localStorage.getItem("isActive");
+	    const logoutBtn = document.getElementById("logout");
 
+	    if (logoutBtn && isActive !== "yes") {
+	        logoutBtn.style.setProperty("display", "none", "important");
+	        console.log("Logout hidden because isActive is not 'yes'");
+	    }
     const placeOrderBtn = document.getElementById("placeOrder");
     console.log("Place Order Button:", placeOrderBtn);
     if (placeOrderBtn) {

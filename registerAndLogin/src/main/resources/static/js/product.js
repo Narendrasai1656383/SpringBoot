@@ -2,10 +2,18 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchProducts();
     displayCartItems();
 
+    const isActive = localStorage.getItem("isActive");
+    const logoutBtn = document.getElementById("logout");
+
+    if (logoutBtn && isActive !== "yes") {
+        logoutBtn.style.setProperty("display", "none", "important");
+        console.log("Logout hidden because isActive is not 'yes'");
+    }
+
     const goToOrdersBtn = document.getElementById("goToOrders");
     if (goToOrdersBtn) {
         goToOrdersBtn.addEventListener("click", function () {
-			displayCartItems();
+            displayCartItems();
             window.location.href = "order.html"; 
         });
     }
@@ -50,6 +58,22 @@ function addToCart(productId, productName) {
     displayCartItems();
 }
 
+function removeFromCart(productId) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const index = cart.findIndex(item => item.id === productId);
+
+    if (index !== -1) {
+        if (cart[index].quantity > 1) {
+            cart[index].quantity -= 1;
+        } else {
+            cart.splice(index, 1);
+        }
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    displayCartItems();
+}
+
 function displayCartItems() {
     console.log("Updating cart display...");
 
@@ -65,10 +89,13 @@ function displayCartItems() {
     cartItemsContainer.innerHTML = cart.length > 0 ? "" : "<p>Cart is empty</p>";
 
     cart.forEach(item => {
-        console.log("Processing item:", item);
         const cartItem = document.createElement("div");
         cartItem.classList.add("cart-item");
-        cartItem.innerHTML = `<p>${item.name} - ${item.quantity}</p>`;
+        cartItem.innerHTML = `
+            <p>${item.name} - ${item.quantity}
+                <button onclick="removeFromCart(${item.id})">Remove</button>
+            </p>
+        `;
         cartItemsContainer.appendChild(cartItem);
     });
 }

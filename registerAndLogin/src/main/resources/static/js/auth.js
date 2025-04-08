@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(data => {
                 alert(data); 
+				localStorage.setItem("isActive","yes");
                 window.location.href = "products.html";
             })
             .catch(error => {

@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	            })
 	            .then(data => {
 	                alert(data); 
+					localStorage.clear();
 	                window.location.href = "index.html";
 	            })
 	            .catch(error => {
