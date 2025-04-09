@@ -1,8 +1,3 @@
-window.history.replaceState(null, "", window.location.href);
-window.addEventListener("popstate", function () {
-    window.history.replaceState(null, "", window.location.href);
-});
-
 const API_BASE_URL = "http://localhost:8080/auth";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -32,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 alert(data); 
 				localStorage.setItem("isActive","yes");
-                window.location.href = "products.html";
+				window.location.replace("products.html");
             })
             .catch(error => {
                 console.error("Login error:", error);
@@ -61,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(result => {
                 alert(result); 
-                window.location.href = "login.html";
+				window.location.replace("login.html");
             })
             .catch(error => {
                 console.error("Registration error:", error);
